@@ -1,1 +1,60 @@
+  Actividad 7
+
+class Scratch {
+    public static void main(String[] args) {
+        int num1 = 10, num2 = 4;
+        long num3 = 7L, num4 = 25L;
+        float num5 = 6.6f, num6 = 2.2f;
+        double num7 = 12.6, num8 = 3.3;
+        char letra = 'A';
+        boolean esMayor = num1 > num2;
+        boolean esPar = (num1 % 2 == 0);
+
+        String resultado = "Operaciones con int:\n" +
+                "El resultado de la suma es: " + (num1 + num2) + "\n" +
+                "El resultado de la resta es: " + (num1 - num2) + "\n" +
+                "El resultado de la multiplicación es: " + (num1 * num2) + "\n" +
+                "El resultado de la división es: " + (num1 / num2) + "\n" +
+                "El resultado del residuo es: " + (num1 % num2) + "\n\n" +
+
+                "Operaciones con long:\n" +
+                "El resultado de la suma es: " + (num3 + num4) + "\n" +
+                "El resultado de la resta es: " + (num3 - num4) + "\n" +
+                "El resultado de la multiplicación es: " + (num3 * num4) + "\n" +
+                "El resultado de la división es: " + (num3 / num4) + "\n" +
+                "El resultado del residuo es: " + (num3 % num4) + "\n\n" +
+
+                "Operaciones con float:\n" +
+                "El resultado de la suma es: " + (num5 + num6) + "\n" +
+                "El resultado de la resta es: " + (num5 - num6) + "\n" +
+                "El resultado de la multiplicación es: " + (num5 * num6) + "\n" +
+                "El resultado de la división es: " + (num5 / num6) + "\n\n" +
+
+                "Operaciones con double:\n" +
+                "El resultado de la suma es: " + (num7 + num8) + "\n" +
+                "El resultado de la resta es: " + (num7 - num8) + "\n" +
+                "El resultado de la multiplicación es: " + (num7 * num8) + "\n" +
+                "El resultado de la división es: " + (num7 / num8) + "\n\n" +
+
+                "Booleanos:\n" +
+                "¿num1 es mayor que num2? " + esMayor + "\n" +
+                "¿num1 es par? " + esPar + "\n\n" +
+
+                "Variable char:\n" +
+                "El valor del carácter es: " + letra + "\n\n";
+
+        // Estructura if para comparar num1 y num2
+        if (num1 > num2) {
+            resultado += "num1 es mayor que num2.\n";
+        } else if (num1 < num2) {
+            resultado += "num1 es menor que num2.\n";
+        } else {
+            resultado += "num1 es igual a num2.\n";
+        }
+
+        // Imprimir los resultados
+        System.out.println(resultado);
+    }
+}
+
 
