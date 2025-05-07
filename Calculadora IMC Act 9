@@ -1,0 +1,228 @@
+MainActivity.java
+package com.luisahr.calculadoraimc
+
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+
+class MainActivity : ComponentActivity() {
+    EditText editTextPeso, editTextAltura;
+    Button btnCalcular;
+    TextView textViewResultado;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        // Accediendo a los elementos por ID con findViewById()
+        editTextPeso = findViewById(R.id.editTextPeso);
+        editTextAltura = findViewById(R.id.editTextAltura);
+        btnCalcular = findViewById(R.id.btnCalcular);
+        textViewResultado = findViewById(R.id.textViewResultado);
+
+        btnCalcular.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mostrarAlerta(); // Muestra la alerta con tu nombre
+                calcularIMC();   // Realiza el cálculo del IMC
+            }
+        });
+    }
+
+    private void mostrarAlerta() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Aviso");
+        builder.setMessage("Hola, soy Luisa y voy a calcular tu IMC ");
+        builder.setPositiveButton("OK", null);
+        builder.show();
+    }
+
+    private void calcularIMC() {
+        try {
+            String pesoStr = editTextPeso.getText().toString();
+            String alturaStr = editTextAltura.getText().toString();
+
+            double peso = Double.parseDouble(pesoStr);
+            double altura = Double.parseDouble(alturaStr);
+
+            double imc = peso / (altura * altura);
+            String resultado = String.format("Tu IMC es: %.2f", imc);
+            textViewResultado.setText(resultado);
+        } catch (Exception e) {
+            textViewResultado.setText("Por favor ingresa valores válidos.");
+        }
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main); // Este conecta con tu archivo XML
+
+
+        EditText pesoEditText = findViewById(R.id.editPeso);
+        EditText alturaEditText = findViewById(R.id.editAltura);
+        EditText edadEditText = findViewById(R.id.editEdad);
+        RadioGroup sexoRadioGroup = findViewById(R.id.radioSexo);
+        TextView resultTxt = findViewById(R.id.resultTxt);
+        FloatingActionButton fab = findViewById(R.id.fab);
+
+
+        // Acción del botón "Calcular"
+        fab.setOnClickListener(v -> {
+            try {
+                double peso = Double.parseDouble(pesoEditText.getText().toString());
+                double altura = Double.parseDouble(alturaEditText.getText().toString());
+                int edad = Integer.parseInt(edadEditText.getText().toString());
+                double imc = peso / (altura * altura);
+
+                String resultadoIMC = String.format("Tu IMC es: %.2f\n", imc);
+
+                // Clasificación IMC
+                if (imc < 18.5) {
+                    resultadoIMC += "Bajo peso";
+                } else if (imc < 25.0) {
+                    resultadoIMC += "Peso normal";
+                } else if (imc < 30.0) {
+                    resultadoIMC += "Sobrepeso";
+                } else {
+                    resultadoIMC += "Obesidad";
+                }
+
+                // ️ Advertencia si es menor de 16 años
+                if (edad < 16) {
+                    int selectedSexoId = sexoRadioGroup.getCheckedRadioButtonId();
+                    if (selectedSexoId == R.id.radioMujer) {
+                        resultadoIMC += "\n\nPara una interpretación correcta consulta los percentiles de talla y peso para niñas.";
+                    } else if (selectedSexoId == R.id.radioHombre) {
+                        resultadoIMC += "\n\nPara una interpretación correcta consulta los percentiles de talla y peso para niños.";
+                    } else {
+                        resultadoIMC += "\n\n(Sexo no especificado)";
+                    }
+                }
+
+                resultTxt.setText(resultadoIMC);
+
+                //  Alerta con tu nombre (usando AlertDialog)
+                new AlertDialog.Builder(MainActivity.this)
+                        .setTitle("IMC Calculado")
+                        .setMessage("Hola, soy Luisa. Tu resultado ha sido calculado correctamente.")
+                        .setPositiveButton("OK", null)
+                        .show();
+
+            } catch (NumberFormatException e) {
+                resultTxt.setText("Por favor ingresa valores válidos.");
+            }
+        });
+    }
+}
+
+
+activity_main.xml
+
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context=".MainActivity">
+
+    <!-- Toolbar -->
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="true">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:title="Calculadora IMC"
+            android:titleTextColor="@android:color/white"
+            android:background="?attr/colorPrimary" />
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <!-- Contenido principal -->
+    <LinearLayout
+        android:id="@+id/mainContent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="24dp"
+        android:layout_gravity="center"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="100dp">
+
+        <EditText
+            android:id="@+id/editPeso"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Peso (kg)"
+            android:inputType="numberDecimal"
+            android:layout_marginBottom="16dp" />
+
+        <EditText
+            android:id="@+id/editAltura"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Altura (m)"
+            android:inputType="numberDecimal"
+            android:layout_marginBottom="16dp" />
+
+        <EditText
+            android:id="@+id/editEdad"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Edad"
+            android:inputType="number"
+            android:layout_marginBottom="16dp" />
+
+        <RadioGroup
+            android:id="@+id/radioSexo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="16dp">
+
+            <RadioButton
+                android:id="@+id/radioMujer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Mujer" />
+
+            <RadioButton
+                android:id="@+id/radioHombre"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Hombre"
+                android:layout_marginStart="16dp"/>
+        </RadioGroup>
+
+        <TextView
+            android:id="@+id/resultTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textSize="18sp"
+            android:layout_marginTop="24dp"
+            android:textColor="@android:color/black" />
+    </LinearLayout>
+
+    <!-- Botón Flotante para calcular -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        app:srcCompat="@android:drawable/ic_menu_info_details"
+        android:contentDescription="Calcular IMC" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
